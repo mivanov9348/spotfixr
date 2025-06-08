@@ -1,0 +1,81 @@
+.App {
+  text-align: center;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  background-color: #f4f4f4;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+}
+
+.header h1 {
+  color: #333;
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+nav ul li {
+  display: inline;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #007bff;
+  font-weight: bold;
+}
+
+nav ul li a:hover {
+  color: #0056b3;
+}
+
+.intro {
+  margin: 40px 0;
+}
+
+.intro h2 {
+  color: #333;
+  font-size: 24px;
+}
+
+.intro p {
+  color: #666;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+footer {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f4f4f4;
+  border-top: 1px solid #ddd;
+}
+
+footer p {
+  margin: 0;
+  color: #666;
+}
