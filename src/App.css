@@ -39,16 +39,16 @@ nav ul li a:hover {
   color: #0056b3;
 }
 
-.intro {
+.page {
   margin: 40px 0;
 }
 
-.intro h2 {
+.page h2 {
   color: #333;
   font-size: 24px;
 }
 
-.intro p {
+.page p {
   color: #666;
   font-size: 18px;
   margin-bottom: 20px;

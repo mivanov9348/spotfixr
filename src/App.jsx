@@ -1,29 +1,44 @@
-import './App.css'
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import Home from './components/Home';
+import ReportIssue from './components/ReportIssue';
+import MyReports from './components/MyReports';
+import NotFound from './components/NotFound';
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="header">
-        <h1>SpotFixr</h1>
-        <nav>
-          <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/submit">Report</a></li>
-            <li><a href="/my-reports">My Reports</a></li>
-          </ul>
-        </nav>
-      </header>
-      <main>
-        <section className="intro">
-          <h2>Welcome</h2>
-          <p>Report here!</p>
-          <button className="submit-button">Report</button>
-        </section>
-      </main>
-      <footer>
-        <p>SpotFixr</p>
-      </footer>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <header className="header">
+          <h1>SpotFixr</h1>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/submit">Report Issue</Link>
+              </li>
+              <li>
+                <Link to="/my-reports">My Reports</Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        <main>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/submit" element={<ReportIssue />} />
+            <Route path="/my-reports" element={<MyReports />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>          
+        </main>
+        <footer>
+          <p>2025 SpotFixr</p>
+        </footer>
+      </div>
+    </BrowserRouter>
+
   )
 }
 
