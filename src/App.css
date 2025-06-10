@@ -1,81 +1,86 @@
 .App {
   text-align: center;
-  padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', sans-serif;
 }
 
 .header {
-  background-color: #f4f4f4;
-  padding: 10px 0;
+  background-color: #ffffff;
+  padding: 1rem 0;
   border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 999;
 }
 
 .header h1 {
   color: #333;
-  font-family: Arial, sans-serif;
+  margin: 0 0 0.5rem 0;
+  font-size: 2rem;
+  letter-spacing: 1px;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
   margin: 0;
 }
 
-nav ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-}
-
-nav ul li {
-  display: inline;
-}
-
-nav ul li a {
+.nav-links li a {
   text-decoration: none;
   color: #007bff;
-  font-weight: bold;
+  font-weight: 600;
+  transition: color 0.3s;
 }
 
-nav ul li a:hover {
+.nav-links li a:hover {
   color: #0056b3;
 }
 
-.page {
-  margin: 40px 0;
+.user-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
-.page h2 {
-  color: #333;
-  font-size: 24px;
+.user-email {
+  font-size: 0.95rem;
+  color: #444;
+  background: #f1f3f5;
+  padding: 0.4rem 0.7rem;
+  border-radius: 6px;
 }
 
-.page p {
-  color: #666;
-  font-size: 18px;
-  margin-bottom: 20px;
-}
-
-.submit-button {
-  background-color: #007bff;
+.logout-button {
+  background-color: #ff6b6b;
   color: white;
-  padding: 10px 20px;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 6px;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-.submit-button:hover {
-  background-color: #0056b3;
+.logout-button:hover {
+  background-color: #fa5252;
+  transform: scale(1.05);
 }
 
 footer {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #f4f4f4;
-  border-top: 1px solid #ddd;
-}
-
-footer p {
-  margin: 0;
-  color: #666;
+  margin-top: 2rem;
+  color: #888;
+  font-size: 0.9rem;
 }
