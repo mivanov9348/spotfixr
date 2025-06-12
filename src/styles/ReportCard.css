@@ -1,0 +1,29 @@
+.report-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.report-card h4 {
+  margin: 0.3rem 0;
+  font-size: 1.1rem;
+}
+
+.report-card .description {
+  font-size: 0.9rem;
+  color: #444;
+  margin: 0.3rem 0;
+}
+
+.report-card .status {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0.3rem 0;
+}
+
+.report-card .timestamp {
+  font-size: 0.75rem;
+  color: #777;
+}

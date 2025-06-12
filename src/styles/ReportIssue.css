@@ -110,30 +110,93 @@
   gap: 10px;
 }
 
+/* Стилен бутон */
 .form-button {
-  background-color: #007bff;
+  background: #007bff;
   color: white;
-  padding: 8px;
+  padding: 10px 18px;
+  font-size: 16px;
   border: none;
-  border-radius: 4px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 14px;
+  transition: all 0.2s ease-in-out;
 }
 
 .form-button:hover {
-  background-color: #0056b3;
+  background: #0056b3;
+  transform: scale(1.05);
 }
 
-.form-cancel-button {
-  background-color: #dc3545;
-  color: white;
-  padding: 8px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+/* Попъп с доклад */
+.leaflet-popup-content {
+  font-family: "Segoe UI", sans-serif;
   font-size: 14px;
+  line-height: 1.4;
+  color: #222;
+  max-width: 250px;
 }
 
-.form-cancel-button:hover {
-  background-color: #c82333;
+/* Различен цвят на статусите */
+.popup-status-submitted {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+.popup-status-in_progress {
+  color: #17a2b8;
+  font-weight: bold;
+}
+
+.popup-status-completed {
+  color: #28a745;
+  font-weight: bold;
+}
+
+/* Поле за търсене */
+input[type="text"] {
+  padding: 10px;
+  width: 100%;
+  max-width: 400px;
+  font-size: 16px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0,123,255,0.4);
+}
+
+/* Анимация при показване на формата */
+.report-form {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Responsive карта */
+.map-container {
+  height: 500px;
+  width: 100%;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  margin-top: 20px;
+}
+
+/* Отзивчивост */
+@media (max-width: 600px) {
+  .map-container {
+    height: 350px;
+  }
+
+  .form-button {
+    width: 100%;
+  }
 }

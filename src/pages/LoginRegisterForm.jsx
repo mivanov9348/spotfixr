@@ -14,8 +14,7 @@ export default function LoginRegisterForm({ onLogin }) {
     setMessage('')
 
     if (isRegistering) {
-      // Проверка дали username вече съществува
-      const { data: existingUser, error: usernameError } = await supabase
+      const { data: existingUser } = await supabase
         .from('profiles')
         .select('id')
         .eq('username', username)
@@ -26,10 +25,12 @@ export default function LoginRegisterForm({ onLogin }) {
         return
       }
 
-      // Регистрация в Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
+        options: {
+          data: { username }
+        }
       })
 
       if (error) {
@@ -37,34 +38,44 @@ export default function LoginRegisterForm({ onLogin }) {
         return
       }
 
-      const user = data?.user
-
-      // Добавяне на username в таблицата profiles
-      if (user) {
-        const { error: insertError } = await supabase
-          .from('profiles')
-          .insert([{ id: user.id, username }])
-
-        if (insertError) {
-          setMessage('Registration failed when saving username.')
-          return
-        }
-      }
-
       setMessage('Success! Check your email to confirm your account.')
+      setEmail('')
+      setPassword('')
+      setUsername('')
     } else {
-      // Вход само с email и парола
-      const { error } = await supabase.auth.signInWithPassword({
+      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
-      if (error) {
-        setMessage(error.message)
-      } else {
-        setMessage('Login successful!')
-        onLogin()
+      if (loginError) {
+        setMessage(loginError.message)
+        return
       }
+
+      const user = loginData.user
+
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('id', user.id)
+        .single()
+
+      if (!profile) {
+        const usernameFromMeta = user.user_metadata?.username || ''
+
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert([{ id: user.id, username: usernameFromMeta }])
+
+        if (insertError) {
+          setMessage('Login ok, but failed to create profile.')
+          return
+        }
+      }
+
+      setMessage('Login successful!')
+      onLogin()
     }
   }
 
@@ -99,7 +110,7 @@ export default function LoginRegisterForm({ onLogin }) {
       </form>
       <p>
         {isRegistering ? 'Already have an account?' : 'Need an account?'}{' '}
-        <button onClick={() => setIsRegistering(!isRegistering)}>
+        <button type="button" onClick={() => setIsRegistering(!isRegistering)}>
           {isRegistering ? 'Login' : 'Register'}
         </button>
       </p>
