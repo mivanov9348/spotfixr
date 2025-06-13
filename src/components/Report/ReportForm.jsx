@@ -1,3 +1,4 @@
+import "../../styles/ReportForm.css";
 export default function ReportForm({
   formData,
   onInputChange,

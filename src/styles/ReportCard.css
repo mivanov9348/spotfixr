@@ -15,7 +15,11 @@
   font-size: 0.9rem;
   color: #444;
   margin: 0.3rem 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
+
 
 .report-card .status {
   font-size: 0.85rem;
@@ -27,3 +31,12 @@
   font-size: 0.75rem;
   color: #777;
 }
+
+.report-card p {
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* брой редове */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

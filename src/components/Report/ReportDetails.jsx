@@ -10,7 +10,7 @@ function ReportDetails() {
 
   useEffect(() => {
     const storedReports = JSON.parse(localStorage.getItem("reports")) || [];
-    const found = storedReports.find((r) => r.id === id);
+    const found = storedReports.find((r) => r.id === Number(id));
     if (found) {
       setReport(found);
     } else {

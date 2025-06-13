@@ -115,10 +115,7 @@ function ReportIssue() {
     setShowForm(false);
   };
 
-  const handleAddReportClick = () => {
-    setSearchResult(null); // 🚫 спри да "принуждаваш" картата да се мести
-    setShowForm(true);
-  };
+
 
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
@@ -252,7 +249,6 @@ function ReportIssue() {
                       <strong>Coordinates:</strong> {marker.lat.toFixed(2)},{" "}
                       {marker.lng.toFixed(2)}
                     </p>
-                    <button onClick={handleAddReportClick}>Add Report</button>
                   </div>
                 )}
               </Popup>

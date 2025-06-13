@@ -1,202 +1,131 @@
+/* Основен контейнер за страницата */
 .page {
-  max-width: 1000px;
+  max-width: 2000px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 1.5rem;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+/* Заглавия и параграфи */
 .page h2 {
   color: #333;
-  font-size: 24px;
+  font-size: 1.75rem;
+  margin-bottom: 0.5rem;
 }
 
 .page p {
   color: #666;
-  font-size: 18px;
-  margin-bottom: 20px;
+  font-size: 1rem;
+  margin-bottom: 1rem;
 }
 
-.search-container {
-  margin-bottom: 20px;
-}
-
+/* Поле за търсене */
 .search-input {
   width: 100%;
-  max-width: 400px;
-  padding: 10px;
-  font-size: 16px;
+  max-width: 600px;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
   border: 1px solid #ccc;
-  border-radius: 4px;
-  outline: none;
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .search-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+  border-color: #0070f3;
+  box-shadow: 0 0 5px rgba(0, 112, 243, 0.3);
+  outline: none;
 }
 
+/* Контейнер за картата */
 .map-container {
   height: 500px;
   width: 100%;
-  position: relative;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0;
 }
 
-/* Styles for Leaflet popup */
 .leaflet-popup-content-wrapper {
-  padding: 10px;
   border-radius: 8px;
+  padding: 0.5rem;
 }
 
 .leaflet-popup-content {
-  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #222;
+  max-width: 300px;
 }
 
 .leaflet-popup-content h3 {
-  margin: 0 0 10px;
-  font-size: 16px;
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
   color: #333;
 }
 
 .leaflet-popup-content p {
-  margin: 5px 0;
-  font-size: 14px;
+  margin: 0.25rem 0;
   color: #666;
 }
 
-/* Styles for Add Report button */
+/* Форма в попъп */
+.leaflet-popup-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.leaflet-popup-content input,
+.leaflet-popup-content textarea {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.leaflet-popup-content button {
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  border-radius: 6px;
+}
+
+/* Бутон за добавяне на доклад */
 .add-report-button {
   background-color: #28a745;
-  color: white;
-  padding: 8px 12px;
+  color: #fff;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 14px;
+  transition: background-color 0.2s, transform 0.1s;
 }
 
 .add-report-button:hover {
   background-color: #218838;
+  transform: scale(1.03);
 }
 
-/* Styles for Report Form */
-.report-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  min-width: 300px;
-}
+/* Статуси в попъп */
+.popup-status-submitted { color: #ffc107; font-weight: 600; }
+.popup-status-in_progress { color: #17a2b8; font-weight: 600; }
+.popup-status-completed { color: #28a745; font-weight: 600; }
 
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-
-.form-input,
-.form-textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-.form-buttons {
-  display: flex;
-  gap: 10px;
-}
-
-/* Стилен бутон */
-.form-button {
-  background: #007bff;
-  color: white;
-  padding: 10px 18px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-.form-button:hover {
-  background: #0056b3;
-  transform: scale(1.05);
-}
-
-/* Попъп с доклад */
-.leaflet-popup-content {
-  font-family: "Segoe UI", sans-serif;
-  font-size: 14px;
-  line-height: 1.4;
-  color: #222;
-  max-width: 250px;
-}
-
-/* Различен цвят на статусите */
-.popup-status-submitted {
-  color: #ffc107;
-  font-weight: bold;
-}
-
-.popup-status-in_progress {
-  color: #17a2b8;
-  font-weight: bold;
-}
-
-.popup-status-completed {
-  color: #28a745;
-  font-weight: bold;
-}
-
-/* Поле за търсене */
-input[type="text"] {
-  padding: 10px;
-  width: 100%;
-  max-width: 400px;
-  font-size: 16px;
-  border: 1px solid #aaa;
-  border-radius: 6px;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 5px rgba(0,0,0,0.05);
-}
-
-input[type="text"]:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 8px rgba(0,123,255,0.4);
-}
-
-/* Анимация при показване на формата */
-.report-form {
-  animation: fadeIn 0.3s ease-in-out;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
-
-/* Responsive карта */
-.map-container {
-  height: 500px;
-  width: 100%;
-  border: 2px solid #ccc;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  margin-top: 20px;
-}
-
-/* Отзивчивост */
+/* Адаптивност */
 @media (max-width: 600px) {
+  .page {
+    padding: 1rem;
+  }
+
   .map-container {
     height: 350px;
   }
 
-  .form-button {
+  .add-report-button {
     width: 100%;
+    text-align: center;
   }
 }

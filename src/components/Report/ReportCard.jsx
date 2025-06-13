@@ -8,7 +8,11 @@ function ReportCard({ report, onClick }) {
         <img src={report.image} alt="Report" className="report-image" />
       )}
       <h4>{report.title}</h4>
-      <p className="description">{report.description}</p>
+      <p className="description">
+        {report.description.length > 20
+          ? report.description.slice(0, 20) + "..."
+          : report.description}
+      </p>
       <p className="status">
         <strong>Status:</strong> {report.status}
       </p>
