@@ -1,4 +1,5 @@
 import "../../styles/ReportForm.css";
+
 export default function ReportForm({
   formData,
   onInputChange,
@@ -39,15 +40,34 @@ export default function ReportForm({
       </div>
       <div className="form-group">
         <label>
-          Image:
+          Images (up to 3):
           <input
             type="file"
             name="image"
             accept="image/*"
+            multiple // Добавено за качване на множество файлове
             onChange={onInputChange}
             className="form-input"
           />
         </label>
+        {/* По желание: Предварителен преглед на избраните снимки */}
+        {formData.images && formData.images.length > 0 && (
+          <div className="image-preview">
+            {formData.images.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt={`Preview ${index + 1}`}
+                style={{
+                  width: "100px",
+                  height: "100px",
+                  objectFit: "cover",
+                  margin: "5px",
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
       <div className="form-buttons">
         <button type="submit" className="form-button">

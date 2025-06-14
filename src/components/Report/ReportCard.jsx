@@ -1,7 +1,7 @@
 import React from "react";
-import "../../styles/ReportCard.css"; // Adjust the path as necessary
+import "../../styles/ReportCard.css"; 
 
-function ReportCard({ report, onClick }) {
+function ReportCard({ report, onClick, onDelete, isOwner }) {
   return (
     <div className="report-card" onClick={onClick}>
       {report.image && (
@@ -20,8 +20,19 @@ function ReportCard({ report, onClick }) {
         <strong>Date:</strong>{" "}
         {new Date(report.timestamp).toLocaleString("bg-BG")}
       </p>
+
+      {isOwner && (
+        <button
+          className="delete-button"
+          onClick={(e) => {
+            e.stopPropagation(); 
+            onDelete();
+          }}
+        >
+          ❌ Delete
+        </button>
+      )}
     </div>
   );
 }
-
 export default ReportCard;

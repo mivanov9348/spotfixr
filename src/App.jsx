@@ -73,6 +73,7 @@ function App() {
     await supabase.auth.signOut();
     setUser(null);
     setUsername("");
+    window.location.reload();
   };
 
   if (!user) {

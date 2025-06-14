@@ -3,8 +3,78 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background-color: #1e1e1e; /* тъмен фон */
+  color: #f1f1f1; /* светъл текст */
 }
 
 * {
   box-sizing: border-box;
+}
+
+/* Навигация */
+nav.navbar {
+  background-color: #2c2c2c;
+  border-bottom: 1px solid #444;
+}
+
+.nav-links li a {
+  color: #f1f1f1;
+  text-decoration: none;
+  padding: 8px 12px;
+  display: inline-block;
+}
+
+.nav-links li a:hover {
+  background-color: #333;
+  border-radius: 4px;
+}
+
+/* Бутони */
+button {
+  background-color: #444;
+  color: #fff;
+  border: 1px solid #666;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #555;
+}
+
+/* Хедър и футър */
+.header {
+  background-color: #2c2c2c;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #444;
+}
+
+footer {
+  background-color: #2c2c2c;
+  color: #aaa;
+  text-align: center;
+  padding: 16px;
+  border-top: 1px solid #444;
+}
+
+/* Общи елементи като card-и */
+.report-card {
+  background-color: #2a2a2a;
+  border: 1px solid #444;
+  padding: 16px;
+  margin: 10px;
+  border-radius: 8px;
+  color: #f1f1f1;
+}
+
+.report-card h4 {
+  margin-top: 0;
+  color: #fff;
+}
+
+.report-card .description {
+  color: #ccc;
 }

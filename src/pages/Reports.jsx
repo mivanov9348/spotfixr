@@ -2,15 +2,31 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/Reports.css";
 import ReportCard from "../components/Report/ReportCard";
+import { supabase } from "../supabase/supabaseClient";
 
 function Reports() {
   const [reports, setReports] = useState([]);
   const [filteredReports, setFilteredReports] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [currentUser, setCurrentUser] = useState(null);
 
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    const getCurrentUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        setCurrentUser(user);
+      }
+    };
+
+    getCurrentUser();
+  }, []);
 
   useEffect(() => {
     const storedReports = JSON.parse(localStorage.getItem("reports")) || [];
@@ -34,6 +50,15 @@ function Reports() {
     navigate(`/my-reports/${report.id}`, {
       state: { background: location },
     });
+  };
+
+  const handleDelete = (id) => {
+    const confirmed = window.confirm("Confirm Delete?");
+    if (confirmed) {
+      const updatedReports = reports.filter((r) => r.id !== id);
+      setReports(updatedReports);
+      localStorage.setItem("reports", JSON.stringify(updatedReports));
+    }
   };
 
   return (
@@ -75,6 +100,8 @@ function Reports() {
               key={report.id}
               report={report}
               onClick={() => handleCardClick(report)}
+              onDelete={() => handleDelete(report.id)}
+              isOwner={currentUser?.id === report.userId}
             />
           ))}
         </div>

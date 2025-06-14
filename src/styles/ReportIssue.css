@@ -129,3 +129,22 @@
     text-align: center;
   }
 }
+
+.add-report-button-container {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.add-report-button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  background-color: #0077cc;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.add-report-button:hover {
+  background-color: #005fa3;
+}

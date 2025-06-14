@@ -40,3 +40,16 @@
   text-overflow: ellipsis;
 }
 
+.delete-button {
+  margin-top: 0.5rem;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}

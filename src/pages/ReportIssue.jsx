@@ -9,8 +9,9 @@ import "../styles/ReportIssue.css";
 import MapClickHandler from "../components/Map/MapClickHandler";
 import MapCenter from "../components/Map/MapCenter";
 import { supabase } from "../supabase/supabaseClient";
+import Modal from "../components/Report/AddReportModal";
 
-// Fix for Leaflet marker icons
+// Fix за Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl:
@@ -41,7 +42,7 @@ function ReportIssue() {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    image: null,
+    images: [],
     user: "",
   });
   const markerRef = useRef(null);
@@ -54,9 +55,7 @@ function ReportIssue() {
         data: { user },
         error,
       } = await supabase.auth.getUser();
-      if (user) {
-        setCurrentUser(user);
-      }
+      if (user) setCurrentUser(user);
     };
     fetchUser();
   }, []);
@@ -77,6 +76,19 @@ function ReportIssue() {
         .catch(() => setLocationName("Failed to fetch location"));
     }
   }, [marker]);
+
+  useEffect(() => {
+    if (searchResult) {
+      axios
+        .get(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${searchResult.lat}&lon=${searchResult.lng}&zoom=18&addressdetails=1`
+        )
+        .then((r) =>
+          setLocationName(r.data.display_name || "Location not found")
+        )
+        .catch(() => setLocationName("Failed to fetch location"));
+    }
+  }, [searchResult]);
 
   useEffect(() => {
     if (markerRef.current && marker) markerRef.current.openPopup();
@@ -115,19 +127,24 @@ function ReportIssue() {
     setShowForm(false);
   };
 
-
-
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === "image" && files && files[0]) {
-      const reader = new FileReader();
-      reader.onloadend = () =>
+    if (name === "image" && files && files.length > 0) {
+      const fileArray = Array.from(files).slice(0, 3); 
+      const imagePromises = fileArray.map((file) => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result);
+          reader.readAsDataURL(file);
+        });
+      });
+      Promise.all(imagePromises).then((imageResults) => {
         setFormData((fd) => ({
           ...fd,
-          image: reader.result,
+          images: imageResults,
           user: currentUser?.email || "Anonymous",
         }));
-      reader.readAsDataURL(files[0]);
+      });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -155,7 +172,7 @@ function ReportIssue() {
       address: locationName,
       title: formData.title,
       description: formData.description,
-      image: formData.image,
+      images: formData.images, // Променено от image на images
       user: formData.user,
       timestamp: new Date().toISOString(),
     };
@@ -163,7 +180,7 @@ function ReportIssue() {
     setReports(up);
     localStorage.setItem("reports", JSON.stringify(up));
     setShowForm(false);
-    setFormData({ title: "", description: "", image: null });
+    setFormData({ title: "", description: "", images: [], user: "" }); // Нулиране на images
     setMarker(null);
   };
 
@@ -171,16 +188,48 @@ function ReportIssue() {
 
   return (
     <div className="page">
-      <h2>Report an Issue</h2>
-      <p>
-        Enter a city name or click on the map to mark the location of the issue.
-      </p>
       <input
         type="text"
         placeholder="Search for a city..."
         value={searchQuery}
         onChange={handleSearchChange}
       />
+
+      {/* Бутон Add Report ако има избрано място и формата не е показана */}
+      {marker && !showForm && (
+        <div className="add-report-button-container">
+          <button
+            onClick={() => setShowForm(true)}
+            className="add-report-button"
+          >
+            Add Report
+          </button>
+        </div>
+      )}
+
+      {/* Модалната форма */}
+      {marker && showForm && (
+        <Modal onClose={handleCancel}>
+          <ReportForm
+            formData={formData}
+            onInputChange={handleInputChange}
+            onSubmit={handleSubmit}
+            onCancel={handleCancel}
+            locationName={locationName}
+          />
+        </Modal>
+      )}
+
+      {locationName &&
+        locationName !== "Loading location..." &&
+        locationName !== "Failed to fetch location" && (
+          <div className="selected-location">
+            <p>
+              <strong>Location:</strong> {locationName}
+            </p>
+          </div>
+        )}
+
       <div className="map-container">
         <MapContainer
           center={[42.7339, 25.4858]}
@@ -199,77 +248,44 @@ function ReportIssue() {
           />
 
           {reports.map((r) => (
-            <Marker key={r.id} position={[r.lat, r.lng]} icon={redIcon}>
-              <Popup autoClose={false} closeOnClick={false}>
-                <div>
-                  <h3>{r.title}</h3>
-                  <p>{r.description}</p>
-                  <p>
-                    <strong>Address:</strong> {r.address}
-                  </p>
-                  <p>
-                    <strong>Reported by:</strong> {r.user}
-                  </p>
-                  <p>
-                    <strong>Date:</strong>{" "}
-                    {new Date(r.timestamp).toLocaleString()}
-                  </p>
-                  {r.image && (
-                    <img
-                      src={r.image}
-                      alt="Report"
-                      style={{
-                        width: "100%",
-                        maxHeight: "150px",
-                        objectFit: "cover",
-                      }}
-                    />
-                  )}
-                </div>
-              </Popup>
-            </Marker>
-          ))}
-          {marker && (
-            <Marker position={marker} ref={markerRef}>
-              <Popup autoClose={false} closeOnClick={false}>
-                {showForm ? (
-                  <ReportForm
-                    formData={formData}
-                    onInputChange={handleInputChange}
-                    onSubmit={handleSubmit}
-                    onCancel={handleCancel}
-                    locationName={locationName}
-                  />
-                ) : (
-                  <div>
-                    <p>
-                      <strong>Location:</strong> {locationName}
-                    </p>
-                    <p>
-                      <strong>Coordinates:</strong> {marker.lat.toFixed(2)},{" "}
-                      {marker.lng.toFixed(2)}
-                    </p>
-                  </div>
-                )}
-              </Popup>
-            </Marker>
-          )}
-        </MapContainer>
+  <Marker key={r.id} position={[r.lat, r.lng]} icon={redIcon}>
+    <Popup autoClose={false} closeOnClick={false}>
+      <div>
+        <h3>{r.title}</h3>
+        <p>{r.description}</p>
+        <p>
+          <strong>Адрес:</strong> {r.address}
+        </p>
+        <p>
+          <strong>Подадено от:</strong> {r.user}
+        </p>
+        <p>
+          <strong>Дата:</strong> {new Date(r.timestamp).toLocaleString()}
+        </p>
+        {r.images && r.images.length > 0 && (
+          <div className="report-images">
+            {r.images.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt={`Report ${index + 1}`}
+                style={{
+                  width: "100%",
+                  maxHeight: "150px",
+                  objectFit: "cover",
+                  marginBottom: "10px",
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
+    </Popup>
+  </Marker>
+))}
 
-      <div style={{ marginTop: "1rem" }}>
-        <button
-          onClick={() => {
-            if (!marker) {
-              alert("Моля, избери локация на картата първо.");
-              return;
-            }
-            setShowForm(true);
-          }}
-          className="form-button"
-        >
-          Add Report
-        </button>
+          {marker && <Marker position={marker} ref={markerRef} />}
+        </MapContainer>
       </div>
     </div>
   );
