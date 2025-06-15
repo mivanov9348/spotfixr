@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/ReportModal.css";
+import ImagePreviewModal from "./ImagePreviewModal"
 
 function ReportModal({ report, onClose }) {
-  const storageKey = `comments-${report?.id || 'default'}`;
+  const storageKey = `comments-${report?.id || "default"}`;
   const [comments, setComments] = useState(() => {
     const saved = localStorage.getItem(storageKey);
     return saved ? JSON.parse(saved) : [];
   });
 
   const [newComment, setNewComment] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(comments));
@@ -25,12 +27,13 @@ function ReportModal({ report, onClose }) {
     setNewComment("");
   };
 
-  // Проверка за валидност на report обекта
   if (!report) {
     return (
       <div className="modal-overlay" onClick={onClose}>
         <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-          <button className="close-btn" onClick={onClose}>X</button>
+          <button className="close-btn" onClick={onClose}>
+            X
+          </button>
           <p>Няма данни за репорта.</p>
         </div>
       </div>
@@ -40,7 +43,9 @@ function ReportModal({ report, onClose }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="close-btn" onClick={onClose}>X</button>
+        <button className="close-btn" onClick={onClose}>
+          X
+        </button>
 
         <div className="modal-header">
           <h2>{report.title || "Без заглавие"}</h2>
@@ -48,16 +53,26 @@ function ReportModal({ report, onClose }) {
 
         <div className="modal-body">
           <div className="modal-details">
-            <p className="description">{report.description || "Няма описание"}</p>
+            <p className="description">
+              {report.description || "Няма описание"}
+            </p>
             <p>
               <strong>Status:</strong>{" "}
-              <span className={report.status ? `status-${report.status.toLowerCase()}` : "status-none"}>
+              <span
+                className={
+                  report.status
+                    ? `status-${report.status.toLowerCase()}`
+                    : "status-none"
+                }
+              >
                 {report.status || "Няма статус"}
               </span>
             </p>
             <p>
               <strong>Time:</strong>{" "}
-              {report.timestamp ? new Date(report.timestamp).toLocaleString() : "Няма дата"}
+              {report.timestamp
+                ? new Date(report.timestamp).toLocaleString()
+                : "Няма дата"}
             </p>
           </div>
 
@@ -67,10 +82,21 @@ function ReportModal({ report, onClose }) {
               <div className="images-list">
                 {report.images ? (
                   report.images.map((img, index) => (
-                    <img key={index} src={img} alt={`Report image ${index + 1}`} className="modal-image" />
+                    <img
+                      key={index}
+                      src={img}
+                      alt={`Report image ${index + 1}`}
+                      className="modal-image"
+                      onClick={() => setPreviewImage(img)}
+                    />
                   ))
                 ) : (
-                  <img src={report.image} alt="Report" className="modal-image" />
+                  <img
+                    src={report.image}
+                    alt="Report"
+                    className="modal-image"
+                    onClick={() => setPreviewImage(report.image)}
+                  />
                 )}
               </div>
             </div>
@@ -100,6 +126,12 @@ function ReportModal({ report, onClose }) {
           </ul>
         </div>
       </div>
+      {previewImage && (
+        <ImagePreviewModal
+          imageUrl={previewImage}
+          onClose={() => setPreviewImage(null)}
+        />
+      )}
     </div>
   );
 }

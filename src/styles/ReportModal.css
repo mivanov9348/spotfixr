@@ -246,3 +246,16 @@
     text-align: center;
   }
 }
+
+.status-submitted {
+  color: orange;
+  font-weight: bold;
+}
+.status-in\ process {
+  color: blue;
+  font-weight: bold;
+}
+.status-ready {
+  color: green;
+  font-weight: bold;
+}
