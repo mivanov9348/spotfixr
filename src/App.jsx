@@ -15,6 +15,7 @@ import NotFound from "./pages/NotFound";
 import LoginRegisterForm from "./pages/LoginRegisterForm";
 import "./styles/App.css";
 
+
 function App() {
   const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
@@ -22,10 +23,8 @@ function App() {
   const background = location.state?.background;
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
       setUser(user);
 
       if (user) {
@@ -41,18 +40,18 @@ function App() {
       }
     };
 
-    fetchUserData();
+    getUser();
 
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        const loggedInUser = session?.user || null;
-        setUser(loggedInUser);
+    const { data: authListener } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        const newUser = session?.user || null;
+        setUser(newUser);
 
-        if (loggedInUser) {
+        if (newUser) {
           const { data: profile } = await supabase
             .from("profiles")
             .select("username")
-            .eq("id", loggedInUser.id)
+            .eq("id", newUser.id)
             .single();
 
           if (profile) {
@@ -64,9 +63,7 @@ function App() {
       }
     );
 
-    return () => {
-      listener.subscription.unsubscribe();
-    };
+    return () => authListener.subscription.unsubscribe();
   }, []);
 
   const handleLogout = async () => {
@@ -102,15 +99,9 @@ function App() {
         <h1>SpotFixr</h1>
         <nav className="navbar">
           <ul className="nav-links">
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/submit">Report Issue</Link>
-            </li>
-            <li>
-              <Link to="/my-reports">Reports</Link>
-            </li>
+            <li><Link to="/">Home</Link></li>
+            <li><Link to="/submit">Report Issue</Link></li>
+            <li><Link to="/my-reports">Reports</Link></li>
           </ul>
           <div className="user-section">
             <span className="user-email">{username || user.email}</span>
